@@ -12,65 +12,78 @@ namespace CleaningPro
         {
             InitializeComponent();
         }
-        //login
+
+        // Login
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string connectionString = "server=localhost;port=3306;database=cleaningpro;user=root;password=root;";
 
             using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
-                string query = "SELECT COUNT(1) FROM Users WHERE Email = @Email AND Password = @Password";
-
-                using (MySqlCommand command = new MySqlCommand(query, conn))
+                try
                 {
-                    command.Parameters.AddWithValue("@Email", txtEmail.Text);
-                    command.Parameters.AddWithValue("@Password", HashPassword(txtPassword.Text));
+                    conn.Open();
 
-                    try
+                    // salt and hash retrieval
+                    string query = "SELECT Password, Salt FROM Users WHERE Email = @Email";
+
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
-                        conn.Open();
-                        int count = Convert.ToInt32(command.ExecuteScalar());
+                        command.Parameters.AddWithValue("@Email", txtEmail.Text);
 
-                        if (count == 1)
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            MessageBox.Show("Login successful!");
+                            if (reader.Read())
+                            {
+                                string storedHashedPassword = reader["Password"].ToString();
+                                string storedSalt = reader["Salt"].ToString();
 
-                            HomePage homepageForm = new HomePage();
-                            homepageForm.Show();
+                                // Hash the entered password with the stored salt
+                                string enteredHashedPassword = HashPassword(txtPassword.Text, storedSalt);
 
-                            this.Hide();
+                                if (enteredHashedPassword == storedHashedPassword)
+                                {
+                                    MessageBox.Show("Login successful!");
+
+                                    HomePage homepageForm = new HomePage();
+                                    homepageForm.Show();
+                                    this.Hide();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Invalid email or password.");
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("Invalid email or password.");
+                            }
                         }
-                        else
-                        {
-                            MessageBox.Show("Invalid email or password.");
-                        }
                     }
-                    catch (MySqlException ex)
-                    {
-                        MessageBox.Show($"Database Error: {ex.Message}");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error: {ex.Message}");
-                    }
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show($"Database Error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
                 }
             }
         }
-        //pass hash
-        private string HashPassword(string password)
+
+        // Hash password with salt
+        private string HashPassword(string password, string salt)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                foreach (byte b in bytes)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-                return builder.ToString();
+                byte[] combinedBytes = Encoding.UTF8.GetBytes(password + salt);
+                byte[] hashBytes = sha256.ComputeHash(combinedBytes);
+                return Convert.ToBase64String(hashBytes);
             }
         }
-        //btn cancel
+
+        // Cancel button
         private void btnCancel_Click(object sender, EventArgs e)
         {
             // Redirect to MainForm

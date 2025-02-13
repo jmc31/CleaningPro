@@ -24,7 +24,7 @@ namespace CleaningPro
                 {
                     conn.Open();
 
-                    //check email
+                    // email if avail
                     string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
                     using (MySqlCommand checkCmd = new MySqlCommand(checkEmailQuery, conn))
                     {
@@ -38,7 +38,7 @@ namespace CleaningPro
                         }
                     }
 
-                    // pass valid
+                    // pass validation
                     if (!IsValidPassword(txtPassword.Text))
                     {
                         MessageBox.Show("Password must be at least 12 characters long, contain at least one uppercase letter, and one special character.");
@@ -53,14 +53,19 @@ namespace CleaningPro
                         return;
                     }
 
-                    // new user
-                    string query = "INSERT INTO Users (Name, Email, Password, Phone, Gender) VALUES (@Name, @Email, @Password, @Phone, @Gender)";
+                    // salt gen
+                    string salt = GenerateSalt();
+                    string hashedPassword = HashPassword(txtPassword.Text, salt);
+
+                    // user
+                    string query = "INSERT INTO Users (Name, Email, Password, Salt, Phone, Gender) VALUES (@Name, @Email, @Password, @Salt, @Phone, @Gender)";
 
                     using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
                         command.Parameters.AddWithValue("@Name", txtName.Text);
                         command.Parameters.AddWithValue("@Email", txtEmail.Text);
-                        command.Parameters.AddWithValue("@Password", HashPassword(txtPassword.Text));
+                        command.Parameters.AddWithValue("@Password", hashedPassword);
+                        command.Parameters.AddWithValue("@Salt", salt);
                         command.Parameters.AddWithValue("@Phone", txtPhone.Text);
                         command.Parameters.AddWithValue("@Gender", gender);
 
@@ -91,37 +96,44 @@ namespace CleaningPro
             }
         }
 
-        // pass hash 265
-        private string HashPassword(string password)
+        // gen salt
+        private string GenerateSalt()
+        {
+            byte[] saltBytes = new byte[16];
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(saltBytes);
+            }
+            return Convert.ToBase64String(saltBytes);
+        }
+
+        // pass hash and salt combi
+        private string HashPassword(string password, string salt)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                StringBuilder builder = new StringBuilder();
-                foreach (byte b in bytes)
-                {
-                    builder.Append(b.ToString("x2"));
-                }
-                return builder.ToString();
+                byte[] combinedBytes = Encoding.UTF8.GetBytes(password + salt);
+                byte[] hashBytes = sha256.ComputeHash(combinedBytes);
+                return Convert.ToBase64String(hashBytes);
             }
         }
 
-        // pass validate
+        // valid pass req
         private bool IsValidPassword(string password)
         {
             return password.Length >= 12 &&
-                   Regex.IsMatch(password, @"[A-Z]") &&  
+                   Regex.IsMatch(password, @"[A-Z]") &&
                    Regex.IsMatch(password, @"[!@#$%^&*(),.?""\:|<>]");
         }
 
-        // get gender
+        // select gender
         private string GetSelectedGender()
         {
             foreach (Control control in grpBoxGender.Controls)
             {
                 if (control is RadioButton radioButton && radioButton.Checked)
                 {
-                    return radioButton.Text; 
+                    return radioButton.Text;
                 }
             }
             return string.Empty;
