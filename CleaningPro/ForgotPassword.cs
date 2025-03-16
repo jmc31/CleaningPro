@@ -10,7 +10,9 @@ namespace CleaningPro
     public partial class ForgotPassword : Form
     {
         private string generatedOtp;
-        private string userEmail; // Store email for OTP validation
+        private string userEmail; 
+        private DateTime otpGeneratedTime; 
+        private const int OTPExpirationTimeInMinutes = 5; 
 
         public ForgotPassword()
         {
@@ -41,8 +43,9 @@ namespace CleaningPro
 
             // Generate OTP
             Random random = new Random();
-            generatedOtp = random.Next(100000, 999999).ToString(); // 6-digit OTP
-            userEmail = txtEmail.Text; // Store email for verification
+            generatedOtp = random.Next(100000, 999999).ToString();
+            userEmail = txtEmail.Text;
+            otpGeneratedTime = DateTime.Now;
 
             MessageBox.Show($"Your OTP is: {generatedOtp}", "OTP Verification");
         }
@@ -53,6 +56,13 @@ namespace CleaningPro
             if (string.IsNullOrEmpty(txtOtp.Text))
             {
                 MessageBox.Show("Please enter the OTP.", "Error");
+                return;
+            }
+
+            // Check if OTP has expired
+            if ((DateTime.Now - otpGeneratedTime).TotalMinutes > OTPExpirationTimeInMinutes)
+            {
+                MessageBox.Show("The OTP has expired. Please request a new one.", "OTP Expired");
                 return;
             }
 
@@ -187,6 +197,13 @@ namespace CleaningPro
             return password.Length >= 12 &&
                    Regex.IsMatch(password, @"[A-Z]") &&
                    Regex.IsMatch(password, @"[!@#$%^&*(),.?""\:|<>]");
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            MainForm mainForm = new MainForm();
+            mainForm.Show();
+            this.Close();
         }
     }
 }
