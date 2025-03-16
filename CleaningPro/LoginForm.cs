@@ -91,5 +91,12 @@ namespace CleaningPro
             mainForm.Show();
             this.Close();
         }
+
+        private void lblForgotPassword_Click(object sender, EventArgs e)
+        {
+            ForgotPassword forgotPasswordForm = new ForgotPassword();
+            forgotPasswordForm.Show();
+            this.Hide();
+        }
     }
 }

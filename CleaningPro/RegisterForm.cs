@@ -94,7 +94,7 @@ namespace CleaningPro
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
-        }
+        }// end
 
         // gen salt
         private string GenerateSalt()

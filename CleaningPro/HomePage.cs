@@ -43,5 +43,10 @@ namespace CleaningPro
         {
             MessageBox.Show("Contact Us Clicked.");
         }
+
+        private void lblServices_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
