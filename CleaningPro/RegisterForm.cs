@@ -24,7 +24,7 @@ namespace CleaningPro
                 {
                     conn.Open();
 
-                    // email if avail
+                    // email availability check
                     string checkEmailQuery = "SELECT COUNT(*) FROM Users WHERE Email = @Email";
                     using (MySqlCommand checkCmd = new MySqlCommand(checkEmailQuery, conn))
                     {
@@ -38,14 +38,14 @@ namespace CleaningPro
                         }
                     }
 
-                    // pass validation
+                    // password validation
                     if (!IsValidPassword(txtPassword.Text))
                     {
                         MessageBox.Show("Password must be at least 12 characters long, contain at least one uppercase letter, and one special character.");
                         return;
                     }
 
-                    // select gender
+                    // gender selection
                     string gender = GetSelectedGender();
                     if (string.IsNullOrEmpty(gender))
                     {
@@ -53,12 +53,23 @@ namespace CleaningPro
                         return;
                     }
 
-                    // salt gen
+                    // security question and answer
+                    string securityQuestion = cmbSecQ.SelectedItem.ToString();
+                    string securityAnswer = txtAnswer.Text.Trim();
+
+                    if (string.IsNullOrEmpty(securityAnswer))
+                    {
+                        MessageBox.Show("Please provide an answer to the security question.");
+                        return;
+                    }
+
+                    // salt generation and password hashing
                     string salt = GenerateSalt();
                     string hashedPassword = HashPassword(txtPassword.Text, salt);
 
-                    // user
-                    string query = "INSERT INTO Users (Name, Email, Password, Salt, Phone, Gender) VALUES (@Name, @Email, @Password, @Salt, @Phone, @Gender)";
+                    // user registration query
+                    string query = "INSERT INTO Users (Name, Email, Password, Salt, Phone, Gender, SecurityQuestion, SecurityAnswer) " +
+                                   "VALUES (@Name, @Email, @Password, @Salt, @Phone, @Gender, @SecurityQuestion, @SecurityAnswer)";
 
                     using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
@@ -68,6 +79,8 @@ namespace CleaningPro
                         command.Parameters.AddWithValue("@Salt", salt);
                         command.Parameters.AddWithValue("@Phone", txtPhone.Text);
                         command.Parameters.AddWithValue("@Gender", gender);
+                        command.Parameters.AddWithValue("@SecurityQuestion", securityQuestion);
+                        command.Parameters.AddWithValue("@SecurityAnswer", securityAnswer);
 
                         int rowsAffected = command.ExecuteNonQuery();
 
@@ -94,9 +107,9 @@ namespace CleaningPro
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
-        }// end
+        }
 
-        // gen salt
+        // Generate salt
         private string GenerateSalt()
         {
             byte[] saltBytes = new byte[16];
@@ -107,7 +120,7 @@ namespace CleaningPro
             return Convert.ToBase64String(saltBytes);
         }
 
-        // pass hash and salt combi
+        // Hash password with salt
         private string HashPassword(string password, string salt)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -118,7 +131,7 @@ namespace CleaningPro
             }
         }
 
-        // valid pass req
+        // Password validation
         private bool IsValidPassword(string password)
         {
             return password.Length >= 12 &&
@@ -126,7 +139,7 @@ namespace CleaningPro
                    Regex.IsMatch(password, @"[!@#$%^&*(),.?""\:|<>]");
         }
 
-        // select gender
+        // Get selected gender
         private string GetSelectedGender()
         {
             foreach (Control control in grpBoxGender.Controls)

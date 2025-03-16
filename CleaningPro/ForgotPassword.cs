@@ -20,15 +20,22 @@ namespace CleaningPro
         // Generate OTP and show in a MessageBox
         private void btnSendOtp_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtEmail.Text) || string.IsNullOrEmpty(txtNewPassword.Text))
+            if (string.IsNullOrEmpty(txtEmail.Text) || string.IsNullOrEmpty(txtNewPassword.Text) || string.IsNullOrEmpty(cmbSecQ.Text) || string.IsNullOrEmpty(txtAnswer.Text))
             {
-                MessageBox.Show("Please enter your email and new password.", "Input Error");
+                MessageBox.Show("Please enter your email, new password, security question, and answer.", "Input Error");
                 return;
             }
 
             if (!IsEmailRegistered(txtEmail.Text))
             {
                 MessageBox.Show("This email is not registered.", "Error");
+                return;
+            }
+
+            // Verify the security question answer
+            if (!IsAnswerCorrect(txtEmail.Text, cmbSecQ.SelectedItem.ToString(), txtAnswer.Text))
+            {
+                MessageBox.Show("Incorrect answer to the security question.", "Error");
                 return;
             }
 
@@ -81,6 +88,27 @@ namespace CleaningPro
                     cmd.Parameters.AddWithValue("@Email", email);
                     int count = Convert.ToInt32(cmd.ExecuteScalar());
                     return count > 0;
+                }
+            }
+        }
+
+        // Check if the provided answer matches the stored answer in the database
+        private bool IsAnswerCorrect(string email, string securityQuestion, string answer)
+        {
+            string connectionString = "server=localhost;port=3306;database=cleaningpro;user=root;password=root;";
+
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT SecurityAnswer FROM Users WHERE Email = @Email AND SecurityQuestion = @SecurityQuestion";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    cmd.Parameters.AddWithValue("@SecurityQuestion", securityQuestion);
+
+                    string storedAnswer = Convert.ToString(cmd.ExecuteScalar());
+                    return storedAnswer != null && storedAnswer.Equals(answer, StringComparison.OrdinalIgnoreCase);
                 }
             }
         }

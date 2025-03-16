@@ -41,6 +41,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.lblAnswer = new System.Windows.Forms.Label();
+            this.txtAnswer = new System.Windows.Forms.TextBox();
+            this.cmbSecQ = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -78,14 +82,14 @@
             // 
             // txtOtp
             // 
-            this.txtOtp.Location = new System.Drawing.Point(316, 267);
+            this.txtOtp.Location = new System.Drawing.Point(247, 225);
             this.txtOtp.Name = "txtOtp";
             this.txtOtp.Size = new System.Drawing.Size(100, 20);
             this.txtOtp.TabIndex = 2;
             // 
             // btnSendOtp
             // 
-            this.btnSendOtp.Location = new System.Drawing.Point(263, 309);
+            this.btnSendOtp.Location = new System.Drawing.Point(194, 267);
             this.btnSendOtp.Name = "btnSendOtp";
             this.btnSendOtp.Size = new System.Drawing.Size(75, 23);
             this.btnSendOtp.TabIndex = 3;
@@ -95,7 +99,7 @@
             // 
             // btnConfirm
             // 
-            this.btnConfirm.Location = new System.Drawing.Point(432, 265);
+            this.btnConfirm.Location = new System.Drawing.Point(363, 223);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.Size = new System.Drawing.Size(75, 23);
             this.btnConfirm.TabIndex = 4;
@@ -107,7 +111,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(259, 265);
+            this.label2.Location = new System.Drawing.Point(190, 223);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(40, 20);
             this.label2.TabIndex = 5;
@@ -115,14 +119,14 @@
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(316, 190);
+            this.txtEmail.Location = new System.Drawing.Point(247, 148);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(100, 20);
             this.txtEmail.TabIndex = 6;
             // 
             // txtNewPassword
             // 
-            this.txtNewPassword.Location = new System.Drawing.Point(316, 230);
+            this.txtNewPassword.Location = new System.Drawing.Point(247, 188);
             this.txtNewPassword.Name = "txtNewPassword";
             this.txtNewPassword.Size = new System.Drawing.Size(100, 20);
             this.txtNewPassword.TabIndex = 7;
@@ -130,7 +134,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(248, 197);
+            this.label3.Location = new System.Drawing.Point(179, 155);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(32, 13);
             this.label3.TabIndex = 8;
@@ -139,7 +143,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(221, 237);
+            this.label4.Location = new System.Drawing.Point(152, 195);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(78, 13);
             this.label4.TabIndex = 9;
@@ -147,18 +151,63 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(373, 309);
+            this.btnCancel.Location = new System.Drawing.Point(304, 267);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 10;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // lblAnswer
+            // 
+            this.lblAnswer.AutoSize = true;
+            this.lblAnswer.Location = new System.Drawing.Point(498, 197);
+            this.lblAnswer.Name = "lblAnswer";
+            this.lblAnswer.Size = new System.Drawing.Size(42, 13);
+            this.lblAnswer.TabIndex = 19;
+            this.lblAnswer.Text = "Answer";
+            // 
+            // txtAnswer
+            // 
+            this.txtAnswer.Location = new System.Drawing.Point(557, 192);
+            this.txtAnswer.Name = "txtAnswer";
+            this.txtAnswer.Size = new System.Drawing.Size(206, 20);
+            this.txtAnswer.TabIndex = 18;
+            // 
+            // cmbSecQ
+            // 
+            this.cmbSecQ.FormattingEnabled = true;
+            this.cmbSecQ.Items.AddRange(new object[] {
+            "What is your favorite food?",
+            "What is you mother\'s maiden name?",
+            "What is your favorite time of the day?",
+            "What is the name of your favorite toy?",
+            "Who is your favorite anime character?",
+            "How old are you when you first walk?",
+            "How old are you when you had your first crush?"});
+            this.cmbSecQ.Location = new System.Drawing.Point(557, 147);
+            this.cmbSecQ.Name = "cmbSecQ";
+            this.cmbSecQ.Size = new System.Drawing.Size(206, 21);
+            this.cmbSecQ.TabIndex = 17;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(443, 150);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(90, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Security Question";
+            // 
             // ForgotPassword
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblAnswer);
+            this.Controls.Add(this.txtAnswer);
+            this.Controls.Add(this.cmbSecQ);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -193,5 +242,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblAnswer;
+        private System.Windows.Forms.TextBox txtAnswer;
+        private System.Windows.Forms.ComboBox cmbSecQ;
+        private System.Windows.Forms.Label label6;
     }
 }

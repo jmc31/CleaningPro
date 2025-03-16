@@ -45,6 +45,10 @@
             this.txtPhone = new System.Windows.Forms.TextBox();
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cmbSecQ = new System.Windows.Forms.ComboBox();
+            this.txtAnswer = new System.Windows.Forms.TextBox();
+            this.lblAnswer = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.grpBoxGender.SuspendLayout();
@@ -112,7 +116,7 @@
             // 
             this.grpBoxGender.Controls.Add(this.btnRadioFemale);
             this.grpBoxGender.Controls.Add(this.btnRadioMale);
-            this.grpBoxGender.Location = new System.Drawing.Point(436, 157);
+            this.grpBoxGender.Location = new System.Drawing.Point(401, 150);
             this.grpBoxGender.Name = "grpBoxGender";
             this.grpBoxGender.Size = new System.Drawing.Size(112, 85);
             this.grpBoxGender.TabIndex = 4;
@@ -201,12 +205,57 @@
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(538, 157);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(90, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Security Question";
+            // 
+            // cmbSecQ
+            // 
+            this.cmbSecQ.FormattingEnabled = true;
+            this.cmbSecQ.Items.AddRange(new object[] {
+            "What is your favorite food?",
+            "What is you mother\'s maiden name?",
+            "What is your favorite time of the day?",
+            "What is the name of your favorite toy?",
+            "Who is your favorite anime character?",
+            "How old are you when you first walk?",
+            "How old are you when you had your first crush?"});
+            this.cmbSecQ.Location = new System.Drawing.Point(652, 154);
+            this.cmbSecQ.Name = "cmbSecQ";
+            this.cmbSecQ.Size = new System.Drawing.Size(121, 21);
+            this.cmbSecQ.TabIndex = 13;
+            // 
+            // txtAnswer
+            // 
+            this.txtAnswer.Location = new System.Drawing.Point(652, 199);
+            this.txtAnswer.Name = "txtAnswer";
+            this.txtAnswer.Size = new System.Drawing.Size(124, 20);
+            this.txtAnswer.TabIndex = 14;
+            // 
+            // lblAnswer
+            // 
+            this.lblAnswer.AutoSize = true;
+            this.lblAnswer.Location = new System.Drawing.Point(593, 204);
+            this.lblAnswer.Name = "lblAnswer";
+            this.lblAnswer.Size = new System.Drawing.Size(42, 13);
+            this.lblAnswer.TabIndex = 15;
+            this.lblAnswer.Text = "Answer";
+            // 
             // RegisterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblAnswer);
+            this.Controls.Add(this.txtAnswer);
+            this.Controls.Add(this.cmbSecQ);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.txtPhone);
@@ -249,5 +298,9 @@
         private System.Windows.Forms.RadioButton btnRadioMale;
         private System.Windows.Forms.Button btnRegister;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cmbSecQ;
+        private System.Windows.Forms.TextBox txtAnswer;
+        private System.Windows.Forms.Label lblAnswer;
     }
 }
