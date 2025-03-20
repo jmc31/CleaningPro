@@ -31,8 +31,11 @@ namespace CleaningPro
 
         private void lblBookNow_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Book Now Clicked.");
+            BookingForm bookingForm = new BookingForm();
+            bookingForm.Show();
+            this.Hide();
         }
+
 
         private void lblAboutUs_Click(object sender, EventArgs e)
         {

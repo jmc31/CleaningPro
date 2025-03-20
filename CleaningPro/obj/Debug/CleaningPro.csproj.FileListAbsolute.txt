@@ -46,3 +46,4 @@ J:\DB1\CleaningPro\CleaningPro\bin\Debug\System.Threading.Tasks.Extensions.xml
 J:\DB1\CleaningPro\CleaningPro\obj\Debug\Cleaning.B005DC12.Up2Date
 J:\DB1\CleaningPro\CleaningPro\obj\Debug\CleaningPro.ForgotPassword.resources
 J:\DB1\CleaningPro\CleaningPro\obj\Debug\CleaningPro.Services.resources
+J:\DB1\CleaningPro\CleaningPro\obj\Debug\CleaningPro.BookingForm.resources
